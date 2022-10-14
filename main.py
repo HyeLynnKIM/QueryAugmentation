@@ -66,7 +66,7 @@ class QueryGenerator:
         col_num_0_number = random.choice(self.num_col_index)
         while (col_num_0_number == col_1_number):
             col_num_0_number = random.choice(self.num_col_index)
-        col_num_0 = self.src_table[0][col_num_0_number]  # col name
+        col_num_0 = self.src_table[0][col_num_0_number]
 
         if col_1_number in self.num_col_index:
             op_1_symbol = random.choice(self.operation_text['num_op'])
@@ -90,11 +90,8 @@ class QueryGenerator:
         }
 
         # select random query
-        random_int = random.randrange(len(operations_sum))
-        select_rand_operation = f'Sum_{random_int}'
+        select_rand_operation = f'Sum_{random.randrange(len(operations_sum))}'
         my_literal = operations_sum[select_rand_operation][random.randrange(len(operations_sum[select_rand_operation]))]
-
-        # Make apporopriate Sql query
         my_SQL = sql_sum[select_rand_operation][0]
 
         return my_literal, my_SQL
@@ -131,22 +128,18 @@ class QueryGenerator:
         operations_avg = {
             "Avg_0": [f'{Conj}{Avg}{col_num_0} {Relation2}{col_1} is {op_1}{val_1}?',
                       f'{Verb}{Avg}{col_num_0} {Relation2}{col_1} is {op_1}{val_1}.'],
-            # list = [{col_num_0}[i] if {col_1}[i] {op_1} {val_1} else 0 for i in range(len({col_num_0})) ] -> sum(list)/len(list)
             "Avg_1": [f'{Conj}{Avg} {col_num_0} of {self.src_table_name}?',
                       f'{Verb}{Avg}of {col_num_0}.',
                       f'{Conj}{Sum}of {col_num_0} divided by number of {col_num_0}?']
         }
-
         sql_avg = {
             "Avg_0": [f'SELECT AVG({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
             "Avg_1": [f'SELECT AVG({col_num_0}) FROM [TABLE]']
         }
 
         # select random query
-        random_int = random.randrange(len(operations_avg))
-        select_rand_operation = f'Avg_{random_int}'
+        select_rand_operation = f'Avg_{random.randrange(len(operations_avg))}'
         my_literal = operations_avg[select_rand_operation][random.randrange(len(operations_avg[select_rand_operation]))]
-
         my_SQL = my_SQL = sql_avg[select_rand_operation][0]
 
         return my_literal, my_SQL
@@ -198,12 +191,10 @@ class QueryGenerator:
             "Diff_2": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_num_0} > MIN({col_num_0}) ORDER BY {col_num_0} ASC']
         }
 
-        random_int = random.randrange(len(operations_diff))
-        select_rand_operation = f'Diff_{random_int}'
+        # select random query
+        select_rand_operation = f'Diff_{random.randrange(len(operations_diff))}'
         my_literal = operations_diff[select_rand_operation][random.randrange(len(operations_diff[select_rand_operation]))]
-
-        # Make apporopriate Sql query
-        my_SQL = my_SQL = sql_diff[select_rand_operation][0]
+        my_SQL = sql_diff[select_rand_operation][0]
 
         return my_literal, my_SQL
 
@@ -263,9 +254,7 @@ class QueryGenerator:
                         f'How many {col_0} are {op_0}{val_0} or {col_1} are {op_1}{val_1}?',
                         f'{Count} {col_0} {op_0}{val_0} or {col_1} {op_1}{val_1}?',
                         f'{Verb} the number of {col_0} {op_0} {val_0} or {col_1} {op_1} {val_1}?'],
-            # 답구해랏
         }
-
         sql_count = {
             "Count_0": [f'SELECT COUNT(*) FROM [TABLE] WHERE {col_0} {op_0_symbol} {val_0}'],
             "Count_1": [f'SELECT COUNT(DISTINCT {col_0}) FROM [TABLE]'],
@@ -274,15 +263,11 @@ class QueryGenerator:
         }
 
         # select random query
-        random_int = random.randrange(0, len(operations_count))
-        select_rand_operation = f'Count_{random_int}'
+        select_rand_operation = f'Count_{random.randrange(0, len(operations_count))}'
         my_literal = operations_count[select_rand_operation][random.randrange(0, len(operations_count[select_rand_operation]))]
-
-        # Make apporopriate Sql query
         my_SQL = sql_count[select_rand_operation][0]
 
         return my_literal, my_SQL
-
 
     def check_date(self, seq: str):
         date_list = ['date' , 'Date', 'DATE', 'DAY', 'day', 'Day']
@@ -318,7 +303,7 @@ class QueryGenerator:
         return is_number
 
 if __name__=='__main__':
-    src_talbe_name = "table"
+    src_talbe_name = None
     src_table = list()
     src_table.append(['number', 'name', 'Position', 'Birthday', 'Size', 'Weight', 'Last Team'])
     src_table.append(['5', 'Tom Lipke', 'Guard/ Forward', '12.04.1986', '1,96', '98', 'Bremen Roosters'])
@@ -329,10 +314,19 @@ if __name__=='__main__':
     src_table.append(['10', 'Muamer Taletovic', 'Forward', '25.05.1977', '1,80', '68', 'SG Bad Dürkheim/Speyer'])
 
     Generator = QueryGenerator(src_table, src_talbe_name)
-    print(Generator.input_literal_TO_SUM())
-    print(Generator.input_literal_TO_DIFF())
-    print(Generator.input_literal_TO_AVG())
-    print(Generator.input_literal_TO_COUNT())
+
+    print('Sum================')
+    query, sql = Generator.input_literal_TO_SUM()
+    print(f'Query: {query}\nSQL: {sql}')
+    print('Avg================')
+    query, sql = Generator.input_literal_TO_AVG()
+    print(f'Query: {query}\nSQL: {sql}')
+    print('Diff================')
+    query, sql = Generator.input_literal_TO_DIFF()
+    print(f'Query: {query}\nSQL: {sql}')
+    print('Count================')
+    query, sql = Generator.input_literal_TO_COUNT()
+    print(f'Query: {query}\nSQL: {sql}')
 
 
 
