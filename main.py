@@ -50,7 +50,7 @@ class QueryGenerator:
             ">": ['bigger than ', 'more than ', 'higher than ', 'larger than ', 'exceeding '],
             "<": ['smaller than ', 'less than ', 'lower than ', 'below ', 'lesser ', 'under '],
             ">=": ['no less than ', 'above ', 'equal or bigger than ', 'equal or greater than ', 'at least'],
-            "<=": ['no more than ', 'no above ', 'equal or smaller than ', 'not above ', 'equal or less than ']
+            "<=": ['no more than ', 'not above ', 'equal or smaller than ', 'not above ', 'equal or less than ']
         }
 
     # Sum operation function
@@ -64,8 +64,8 @@ class QueryGenerator:
         col_1_number = random.choice(self.col_index) # col_1 index
         col_1 = self.src_table[0][col_1_number]  # col_1 name
         col_num_0_number = random.choice(self.num_col_index)
-        while (col_num_0_number == col_1_number):
-            col_num_0_number = random.choice(self.num_col_index)
+        # while (col_num_0_number == col_1_number):
+        #     col_num_0_number = random.choice(self.num_col_index)
         col_num_0 = self.src_table[0][col_num_0_number]
 
         if col_1_number in self.num_col_index:
@@ -109,8 +109,8 @@ class QueryGenerator:
         col_num_0 = self.src_table[0][col_num_0_number]
 
         col_1_number = random.choice(self.col_index)
-        while (col_num_0_number == col_1_number):
-            col_1_number = random.choice(self.col_index)
+        # while (col_num_0_number == col_1_number):
+        #     col_1_number = random.choice(self.col_index)
         col_1 = self.src_table[0][col_1_number]
 
         if col_1_number in self.num_col_index:
@@ -159,8 +159,8 @@ class QueryGenerator:
         col_num_0 = self.src_table[0][col_num_0_number]
 
         col_1_number = random.choice(self.col_index)
-        while (col_num_0_number == col_1_number):
-            col_1_number = random.choice(self.col_index)
+        # while (col_num_0_number == col_1_number):
+        #     col_1_number = random.choice(self.col_index)
         col_1 = self.src_table[0][col_1_number]
 
         if col_1_number in self.num_col_index:
@@ -211,8 +211,8 @@ class QueryGenerator:
         col_0 = self.src_table[0][col_0_number]
 
         col_num_1_number = random.choice(self.num_col_index)
-        while(col_num_1_number==col_0_number):
-            col_num_1_number = random.choice(self.num_col_index)
+        # while(col_num_1_number==col_0_number):
+        #     col_num_1_number = random.choice(self.num_col_index)
         col_num_1 = self.src_table[0][col_num_1_number]
 
         col_1_number = random.choice(self.col_index)
