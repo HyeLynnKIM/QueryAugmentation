@@ -39,11 +39,13 @@ class QueryGenerator:
             "op": ['==', '!=']
         }
 
+        # Set not-num operation
         self.not_num_op_list = {
             "==": ['same with ', 'equal to ', 'equivalent of ', 'equivalent to '],
             "!=": ['different from ', 'not equal to ', 'not equivalent of ', 'not alike ', 'except',  'not same with '],
         }
 
+        # Set op_text
         self.op_list = {
             "==": ['same with ', 'equal to ', 'equivalent of ', 'equivalent to '],
             "!=": ['different from ', 'not equal to ', 'not equivalent of ', 'not alike ', 'except', 'not same with '],
@@ -53,6 +55,7 @@ class QueryGenerator:
             "<=": ['no more than ', 'not above ', 'equal or smaller than ', 'not above ', 'equal or less than ']
         }
 
+    #### 1. SUM  2. Avg  3. DIFF 4. Count - In variable, number index(like 0, 1, 2, ... ) is sequence of variable ####
     # Sum operation function
     def input_literal_TO_SUM(self):
         # Set Required Variable
@@ -270,7 +273,7 @@ class QueryGenerator:
         return my_literal, my_SQL
 
     def check_date(self, seq: str):
-        date_list = ['date' , 'Date', 'DATE', 'DAY', 'day', 'Day']
+        date_list = ['date', 'Date', 'DATE', 'DAY', 'day', 'Day']
         for day in date_list:
             if day in seq:
                 return True
