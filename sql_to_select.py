@@ -1,26 +1,31 @@
 import re
-## Insert 'FROM [TABLE] into SQL
-def Insert_FROM(sql: str):
-    p = re.compile('select\s.*\swhere', re.I)
+from updat_FROM import *
 
-    # Save the front part of 'FROM'
-    text = str(re.match(p, sql))
-    text = text.split('match=\'')[1].split('\'')[0].split('select ')[1].split('where')[0]
-    sql = re.sub(p, 'select '+text+'FROM [table] where', sql)
-
-    return sql
-
-## Insert 'FROM [TABLE] into SQL
 def Change_SQL(sql: str):
-    if 'count' in sql:
-        head = sql.split('count ( ')[0] # select
-        item = sql.split('count ( ')[1].split(' )')[0] # count 안 item
-        tail = sql.split('count ( ')[1].split(' )')[1] # 뒷부분
+    # max - min 의 형태인 경우 처리
+    p = re.compile('select\smax.*\s-\smin\s.*')
+    if re.match(p, sql) != None:
+        sql = sql.replace(' - ', ' , ')
+        return sql
+    
+    # count, sum, avg 경우 처리
+    if 'count ( ' or 'sum ( ' or 'avg ( ' in sql:
+        conf = 'count'
+        if 'sum ( ' in sql:
+            conf = 'sum'
+        elif 'avg ( ' in sql:
+            conf = 'avg'
+
+        head = sql.split(f'{conf} ( ')[0] # select
+        item = sql.split(f'{conf} ( ')[1].split(' )')[0] # count 안 item
+
+        if item == '': item = '*' # ex: select count (  ) where report = '97-81' 같이 괄호 빈 경우
+        tail = sql.split(f'{conf} ( ')[1].split(' )')[1] # 뒷부분
         sql = head + item + tail
 
     return sql
 
 if __name__=='__main__':
-    sql = 'select count ( * ) where prize money (usd) = \'$0\'' # example
+    sql = 'select avg ( matches )' # example
     sql = Insert_FROM(sql)
     print(Change_SQL(sql))
