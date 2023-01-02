@@ -1,6 +1,8 @@
 import re
-from updat_FROM import *
+from update_FROM import *
 
+
+## sql.src target
 def Change_SQL_space(sql: str):
     # max - min 의 형태인 경우 처리
     p = re.compile('select\smax.*\s-\smin\s.*', re.I)
@@ -25,6 +27,7 @@ def Change_SQL_space(sql: str):
 
     return sql
 
+## Generated sql target
 def Change_SQL_CAP(sql: str):
     # max - min 의 형태인 경우 처리
     p = re.compile('SELECT\sMAX.*\s-\sMIN.*', re.I)
