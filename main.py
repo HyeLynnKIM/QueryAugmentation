@@ -1,5 +1,6 @@
 import random
 import re
+from sql_to_select import *
 
 p1 = re.compile('\d{2}.\d{2}.\d{2,4}')
 p2 = re.compile('\d{2}-\d{2}-\d{2,4}')
@@ -189,8 +190,8 @@ class QueryGenerator:
                    f'{Conj}the second vaule of {col_num_0} from the back of descending order?']
         }
         sql_diff = {
-            "Diff_0": [f'SELECT *, MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE]'],
-            "Diff_1": [f'SELECT *, MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
+            "Diff_0": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE]'],
+            "Diff_1": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
             "Diff_2": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_num_0} > MIN({col_num_0}) ORDER BY {col_num_0} ASC']
         }
 
@@ -321,15 +322,19 @@ if __name__=='__main__':
     print('Sum================')
     query, sql = Generator.input_literal_TO_SUM()
     print(f'Query: {query}\nSQL: {sql}')
-    print('Avg================')
+    print(Change_SQL_CAP(sql))
+    print('\nAvg================')
     query, sql = Generator.input_literal_TO_AVG()
     print(f'Query: {query}\nSQL: {sql}')
-    print('Diff================')
+    print(Change_SQL_CAP(sql))
+    print('\nDiff================')
     query, sql = Generator.input_literal_TO_DIFF()
     print(f'Query: {query}\nSQL: {sql}')
-    print('Count================')
+    print(Change_SQL_CAP(sql))
+    print('\nCount================')
     query, sql = Generator.input_literal_TO_COUNT()
     print(f'Query: {query}\nSQL: {sql}')
+    print(Change_SQL_CAP(sql))
 
 
 
