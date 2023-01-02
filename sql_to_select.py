@@ -31,11 +31,24 @@ def Change_SQL_space(sql: str):
 def Change_SQL_CAP(sql: str):
     # max - min 의 형태인 경우 처리
     p = re.compile('SELECT\sMAX.*\s-\sMIN.*', re.I)
+    p2 = re.compile('SELECT\sMAX.*', re.I)
+    p3 = re.compile('SELECT\sMIN.*', re.I)
+
     if re.match(p, sql) != None:
         sql = sql.replace(' - ', ' , ')
         return sql
 
     # MAX 만 뽑는 경우 처리
+    if re.match(p2, sql) != None:
+        item = sql.split('MAX(')[1].split(')')[0]
+        sql = sql.replace('MAX('+item+')', item)
+        return sql
+
+    # MIN 만 뽑는 경우 처리
+    if re.match(p3, sql) != None:
+        item = sql.split('MIN(')[1].split(')')[0]
+        sql = sql.replace('MIN('+item+')', item)
+        return sql
 
     # count, sum, avg 경우 처리
     conf = ''

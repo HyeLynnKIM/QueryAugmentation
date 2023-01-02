@@ -321,20 +321,16 @@ if __name__=='__main__':
 
     print('Sum================')
     query, sql = Generator.input_literal_TO_SUM()
-    print(f'Query: {query}\nSQL: {sql}')
-    print(Change_SQL_CAP(sql))
+    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nAvg================')
     query, sql = Generator.input_literal_TO_AVG()
-    print(f'Query: {query}\nSQL: {sql}')
-    print(Change_SQL_CAP(sql))
+    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nDiff================')
     query, sql = Generator.input_literal_TO_DIFF()
-    print(f'Query: {query}\nSQL: {sql}')
-    print(Change_SQL_CAP(sql))
+    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nCount================')
     query, sql = Generator.input_literal_TO_COUNT()
-    print(f'Query: {query}\nSQL: {sql}')
-    print(Change_SQL_CAP(sql))
+    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
 
 
 
