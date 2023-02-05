@@ -1,7 +1,6 @@
 import re
 from update_FROM import *
 
-
 ## sql.src target
 def Change_SQL_space(sql: str):
     # max - min 의 형태인 경우 처리
@@ -33,9 +32,16 @@ def Change_SQL_CAP(sql: str):
     p = re.compile('SELECT\sMAX.*\s-\sMIN.*', re.I)
     p2 = re.compile('SELECT\sMAX.*', re.I)
     p3 = re.compile('SELECT\sMIN.*', re.I)
+    p4 = re.compile('SELECT\sMiN.*\s>\sMIN.*', re.I)
 
     if re.match(p, sql) != None:
         sql = sql.replace(' - ', ' , ')
+        return sql
+
+    # 일반 - MIN 선택하는 경우
+    if re.match(p4, sql) != None:
+        item = sql.split('MIN(')[1].split(')')[0]
+        sql = 'SELECT ' + item + ' FROM' + sql.split('FROM')[1]
         return sql
 
     # MAX 만 뽑는 경우 처리

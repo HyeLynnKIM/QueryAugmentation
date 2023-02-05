@@ -166,6 +166,8 @@ class QueryGenerator:
         # while (col_num_0_number == col_1_number):
         #     col_1_number = random.choice(self.col_index)
         col_1 = self.src_table[0][col_1_number]
+        col_2_number = random.choice(self.col_index)
+        col_2 = self.src_table[0][col_2_number]
 
         if col_1_number in self.num_col_index:
             op_1_symbol = random.choice(self.operation_text["num_op"])
@@ -175,28 +177,36 @@ class QueryGenerator:
             op_1 = random.choice(self.not_num_op_list[op_1_symbol])
 
         val_1 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
+        val_2 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
+        # rand_row = self.src_table[random.randrange((1, len(self.src_table)))]
 
         operations_diff = {
-            "Diff_0": [f'{Conj}{max}{Diff}in {col_num_0}?',
-                   f'How much {max}{col_num_0} is {Comp}minimum {col_num_0}?',
-                   f'{Verb}the {Diff}between max of {col_num_0} and min of {col_num_0}.'],
-            "Diff_1": [f'{Conj}{max}{Diff}between {col_num_0} {Relation}{col_1} {op_1}{val_1}?',
-                   f'From {col_1} {op_1}{val_1}, {Verb}the {max}{Diff}between {col_num_0}.',
-                   f'{Verb}{max}{Diff}between {col_num_0} {Relation}{col_1} {op_1}{val_1}.'],
-            "Diff_2": [f'{Conj}the second {min}in {col_num_0}?',
-                   f'{Verb}the second {min}in {col_num_0}.',
-                   f'Return the second {min}in {col_num_0}?',
-                   f'{Conj}the second value of {col_num_0} in ascending order?',
-                   f'{Conj}the second vaule of {col_num_0} from the back of descending order?']
+            # "Diff_0": [f'{Conj}{max}{Diff}in {col_num_0}?',
+            #        f'How much {max}{col_num_0} is {Comp}minimum {col_num_0}?',
+            #        f'{Verb}the {Diff}between max of {col_num_0} and min of {col_num_0}.'],
+            # "Diff_1": [f'{Conj}{max}{Diff}between {col_num_0} {Relation}{col_1} {op_1}{val_1}?',
+            #        f'From {col_1} {op_1}{val_1}, {Verb}the {max}{Diff}between {col_num_0}.',
+            #        f'{Verb}{max}{Diff}between {col_num_0} {Relation}{col_1} {op_1}{val_1}.'],
+            # "Diff_2": [f'{Conj}the second {min}in {col_num_0}?',
+            #        f'{Verb}the second {min}in {col_num_0}.',
+            #        f'Return the second {min}in {col_num_0}?',
+            #        f'{Conj}the second value of {col_num_0} in ascending order?',
+            #        f'{Conj}the second vaule of {col_num_0} from the back of descending order?'],
+            "Diff_3": [f'{Conj}the {Diff}in {col_num_0} between {val_1} and {val_2}?',
+                       f'Calculate the {Diff}in {col_num_0} between {val_1} and {val_2}.',
+                       f'{Conj}the {col_num_0} {Diff} between {val_1} and {val_2}',
+                       f'In {col_num_0}, {Conj} the {Diff} between {val_1} and {val_2}']
         }
         sql_diff = {
-            "Diff_0": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE]'],
-            "Diff_1": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
-            "Diff_2": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_num_0} > MIN({col_num_0}) ORDER BY {col_num_0} ASC']
+            # "Diff_0": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE]'],
+            # "Diff_1": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
+            # "Diff_2": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_num_0} > MIN({col_num_0}) ORDER BY {col_num_0} ASC'],
+            "Diff_3": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_1} + SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_2}']
         }
 
         # select random query
-        select_rand_operation = f'Diff_{random.randrange(len(operations_diff))}'
+        # select_rand_operation = f'Diff_{random.randrange(len(operations_diff))}'
+        select_rand_operation = f'Diff_3'
         my_literal = operations_diff[select_rand_operation][random.randrange(len(operations_diff[select_rand_operation]))]
         my_SQL = sql_diff[select_rand_operation][0]
 
@@ -325,7 +335,7 @@ if __name__=='__main__':
     print('\nAvg================')
     query, sql = Generator.input_literal_TO_AVG()
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
-    print('\nDiff================')
+    print('\nDiff================') ## Diff 3이 wikitq 스타일임!!!!!
     query, sql = Generator.input_literal_TO_DIFF()
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nCount================')
