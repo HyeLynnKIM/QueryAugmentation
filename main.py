@@ -25,12 +25,12 @@ class QueryGenerator:
         # Set fixed operation
         self.operation_text = {
             "MAX": ['maximum '],
-            "MIN" : ['minimun '],
-            "Sum": ['sum ', 'total amount ', 'aggregation ', 'addition '],
+            "MIN" : ['minimun ', 'least '],
+            "Sum": ['sum ', 'total amount ', 'addition '],
             "Avg": ['the average ', 'the mean '],
             "Diff": ['difference ', 'gap '],
             "Verb": ['Tell me ', 'Give me ', 'Check ', 'Find ', 'Show me '],
-            "Conj": ['What is ', 'Which is '],
+            "Conj": ['What is ', 'Which is ', 'What was ', 'What\'s '],
             "Count": ['Count ', 'Count the number of '],
             "How": ['How many ', 'How much '],
             "Comp": ['more than ',' less than '],
@@ -82,11 +82,13 @@ class QueryGenerator:
         val_1 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
 
         operations_sum = {
-            "Sum_0": [f'{Conj}{Sum}of {col_num_0}?',
-                      f'{Verb}{Sum}of {col_num_0}.'],
-            "Sum_1": [f'{Conj}{Sum}of {col_num_0} {Relation2}{col_1} is {op_1}{val_1}?',
-                      f'{Conj}{Sum}of {col_num_0} {Relation2}{col_1} is {op_1}{val_1}?',
-                      f'Add all the {col_num_0} {Relation2}{col_1} is {op_1}{val_1}.'],
+            "Sum_0": [f'{Conj}{Sum}of {col_num_0}?', # what is sum of A?
+                      f'{Verb}{Sum}of {col_num_0}.', # Tell sum of A.
+                      f'{Conj}{Sum} if you add all of {col_num_0}?',  # what is the total if you add all of the selection numbers together?
+                      ],
+            "Sum_1": [f'{Conj}{Sum}of {col_num_0} {Relation2}{col_1} is {op_1}{val_1}?', # What is sum of A where B > 2 ?
+                      # f'Add all the {col_num_0} {Relation2}{col_1} is {op_1}{val_1}.', # Add all the
+                      f'Add up {Sum}number of of {col_num_0}.'],
         }
         sql_sum = {
             "Sum_0": [f'SELECT SUM({col_num_0}) FROM [TABLE]'],
@@ -107,6 +109,7 @@ class QueryGenerator:
         Verb = random.choice(self.operation_text["Verb"])
         Avg = random.choice(self.operation_text["Avg"])
         Sum = random.choice(self.operation_text["Sum"])
+        How = random.choice(self.operation_text["How"])
         Relation2 = random.choice(self.operation_text["Relation2"])
 
         col_num_0_number = random.choice(self.num_col_index)
@@ -131,10 +134,13 @@ class QueryGenerator:
 
         operations_avg = {
             "Avg_0": [f'{Conj}{Avg}{col_num_0} {Relation2}{col_1} is {op_1}{val_1}?',
-                      f'{Verb}{Avg}{col_num_0} {Relation2}{col_1} is {op_1}{val_1}.'],
-            "Avg_1": [f'{Conj}{Avg} {col_num_0} of {self.src_table_name}?',
+                      f'{Verb}{Avg}{col_num_0} {Relation2}{col_1} is {op_1}{val_1}.'
+                      f'On Average, {How}{col_num_0}?',
+                      f'{Conj}{Avg}number of {col_num_0} {col_1} is {op_1}{val_1}?'],
+            "Avg_1": [f'{Conj}{Avg}{col_num_0} of {self.src_table_name}?',
                       f'{Verb}{Avg}of {col_num_0}.',
-                      f'{Conj}{Sum}of {col_num_0} divided by number of {col_num_0}?']
+                      f'{Conj}{Sum}of {col_num_0} divided by number of {col_num_0}?',
+                      f'{Conj}{Avg}{col_num_0}?']
         }
         sql_avg = {
             "Avg_0": [f'SELECT AVG({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
@@ -195,7 +201,7 @@ class QueryGenerator:
             "Diff_3": [f'{Conj}the {Diff}in {col_num_0} between {val_1} and {val_2}?',
                        f'Calculate the {Diff}in {col_num_0} between {val_1} and {val_2}.',
                        f'{Conj}the {col_num_0} {Diff} between {val_1} and {val_2}',
-                       f'In {col_num_0}, {Conj} the {Diff} between {val_1} and {val_2}']
+                       f'In {col_num_0}, {Conj}the {Diff} between {val_1} and {val_2}']
         }
         sql_diff = {
             # "Diff_0": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE]'],
@@ -260,7 +266,8 @@ class QueryGenerator:
                         f'For each {col_0}, return how many {col_1} are {op_1}{val_1}.'],
             "Count_1": [f'How many types are in {col_0}?',
                         f'How many numbers are in {col_0}?',
-                        f'{Verb}how many total options in {col_0}.'],
+                        f'{Verb}how many total options in {col_0}.',
+                        f'Add up the total number of of {col_0}.'],
             "Count_2": [f'How many {col_0} {Relation2}{col_num_1} is {op_1}minimum {col_num_1}?',
                         f'From {col_num_1} is {op_1}minimum {col_num_1}, {Verb}the number of {col_0}.',
                         f'For each {col_0}, how many {col_num_1} are {op_1}minimum {col_num_1}?'],
