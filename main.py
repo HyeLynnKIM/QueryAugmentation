@@ -186,6 +186,8 @@ class QueryGenerator:
         val_2 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
         # rand_row = self.src_table[random.randrange((1, len(self.src_table)))]
 
+        # if val_1 == val_2 ~ we use max/min gap (for cases that there are many stasified cell)
+        # if val_1 != val_2:
         operations_diff = {
             # "Diff_0": [f'{Conj}{max}{Diff}in {col_num_0}?',
             #        f'How much {max}{col_num_0} is {Comp}minimum {col_num_0}?',
@@ -200,19 +202,91 @@ class QueryGenerator:
             #        f'{Conj}the second vaule of {col_num_0} from the back of descending order?'],
             "Diff_3": [f'{Conj}the {Diff}in {col_num_0} between {val_1} and {val_2}?',
                        f'Calculate the {Diff}in {col_num_0} between {val_1} and {val_2}.',
-                       f'{Conj}the {col_num_0} {Diff} between {val_1} and {val_2}',
-                       f'In {col_num_0}, {Conj}the {Diff} between {val_1} and {val_2}']
+                       f'{Conj}the {col_num_0} {Diff}between {val_1} and {val_2}?',
+                       f'In {col_num_0}, {Conj}the {Diff}between {val_1} and {val_2}?'],
+            "Diff_3_NUM":[f'{Conj}the {Diff}in {col_num_0} {Relation}{col_1} is between {val_1} and {val_2}?',
+                       f'Calculate the {Diff}in {col_num_0} {Relation}{col_1} is between {val_1} and {val_2}.',
+                       f'{Conj}the {col_num_0} {Diff}{Relation}{col_1} is between {val_1} and {val_2}?',
+                       f'In {col_num_0}, {Conj}the {Diff}{Relation}{col_1} is between {val_1} and {val_2}?',
+                       ]
         }
         sql_diff = {
             # "Diff_0": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE]'],
             # "Diff_1": [f'SELECT MAX({col_num_0}) - MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
             # "Diff_2": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_num_0} > MIN({col_num_0}) ORDER BY {col_num_0} ASC'],
-            "Diff_3": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_1} + SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_2}']
+            "Diff_3": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_1} + SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_2}'],
+            "Diff_3_NUM": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_1} + SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_2}'],
+
         }
+        # else:
+        #     operations_diff = {
+        #         "Diff_3": [f'{Conj}the {max}{Diff}in {col_num_0} between {val_1} and {val_2}?',
+        #                    f'Calculate the {Diff}in {col_num_0} between {val_1} and {val_2}.',
+        #                    f'{Conj}the {col_num_0} {Diff} between {val_1} and {val_2}',
+        #                    f'In {col_num_0}, {Conj}the {Diff}between {val_1} and {val_2}?']
+        #     }
+        #
+        #     sql_diff = {
+        #         "Diff_3": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_1} + SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_2}']
+        #     }
 
         # select random query
         # select_rand_operation = f'Diff_{random.randrange(len(operations_diff))}'
-        select_rand_operation = f'Diff_3'
+
+        try:
+            tmp = int(val_1)
+            select_rand_operation = f'Diff_3_NUM'
+        except:
+            select_rand_operation = f'Diff_3'
+        my_literal = operations_diff[select_rand_operation][random.randrange(len(operations_diff[select_rand_operation]))]
+        my_SQL = sql_diff[select_rand_operation][0]
+
+        return my_literal, my_SQL
+
+    def input_literal_TO_DIFF2(self):
+        # Set Required Variable
+        Conj = random.choice(self.operation_text["Conj"])
+        Verb = random.choice(self.operation_text["Verb"])
+        max = random.choice(self.operation_text["MAX"])
+        min = random.choice(self.operation_text["MIN"])
+        Relation = random.choice(self.operation_text["Relation"])
+        Comp = random.choice(self.operation_text["Comp"])
+        Diff = random.choice(self.operation_text["Diff"])
+
+        col_num_0_number = random.choice(self.num_col_index)
+        col_num_0 = self.src_table[0][col_num_0_number]
+
+        col_1_number = random.choice(self.col_index)
+        # while (col_num_0_number == col_1_number):
+        #     col_1_number = random.choice(self.col_index)
+        col_1 = self.src_table[0][col_1_number]
+        col_2_number = random.choice(self.col_index)
+        col_2 = self.src_table[0][col_2_number]
+
+        if col_1_number in self.num_col_index:
+            op_1_symbol = random.choice(self.operation_text["num_op"])
+            op_1 = random.choice(self.op_list[op_1_symbol])
+        else:
+            op_1_symbol = random.choice(self.operation_text["op"])
+            op_1 = random.choice(self.not_num_op_list[op_1_symbol])
+
+        val_1 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
+        val_2 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
+        # rand_row = self.src_table[random.randrange((1, len(self.src_table)))]
+
+        operations_diff = {
+            "Diff_3_NUM":[f'{Conj}the {Diff}in {col_num_0} {Relation}{col_1} is between {val_1} and {val_2}?',
+                       f'Calculate the {Diff}in {col_num_0} {Relation}{col_1} is between {val_1} and {val_2}.',
+                       f'{Conj}the {col_num_0} {Diff}{Relation}{col_1} is between {val_1} and {val_2}?',
+                       f'In {col_num_0}, {Conj}the {Diff}{Relation}{col_1} is between {val_1} and {val_2}?',
+                       ]
+        }
+        sql_diff = {
+            "Diff_3_NUM": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_1} + SELECT {col_num_0} FROM [TABLE] WHERE {col_1} == {val_2}'],
+
+        }
+
+        select_rand_operation = f'Diff_3_NUM'
         my_literal = operations_diff[select_rand_operation][random.randrange(len(operations_diff[select_rand_operation]))]
         my_SQL = sql_diff[select_rand_operation][0]
 
@@ -311,6 +385,7 @@ class QueryGenerator:
         else:
             return False, num_str
 
+    ## This def cannot distinguish numeric data using ','
     def is_number_column(self, table: list, col_idx: int):  # Column 중에 num이 있는지 확인
         is_number = True
         if self.check_date(self.src_table[0][col_idx]):
@@ -344,6 +419,9 @@ if __name__=='__main__':
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nDiff================') ## Diff 3이 wikitq 스타일임!!!!!
     query, sql = Generator.input_literal_TO_DIFF()
+    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    print('\nDiff2================')  ## Diff 3_NUM 은 조건에 사용되는 컬럼 다 나옴!!!!!
+    query, sql = Generator.input_literal_TO_DIFF2()
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nCount================')
     query, sql = Generator.input_literal_TO_COUNT()
