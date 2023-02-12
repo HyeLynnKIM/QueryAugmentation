@@ -150,7 +150,7 @@ class QueryGenerator:
         # select random query
         select_rand_operation = f'Avg_{random.randrange(len(operations_avg))}'
         my_literal = operations_avg[select_rand_operation][random.randrange(len(operations_avg[select_rand_operation]))]
-        my_SQL = my_SQL = sql_avg[select_rand_operation][0]
+        my_SQL = sql_avg[select_rand_operation][0]
 
         return my_literal, my_SQL
 
@@ -364,6 +364,60 @@ class QueryGenerator:
 
         return my_literal, my_SQL
 
+    def input_literal_TO_SELECT(self):
+        # Set Required Variable
+        Conj = random.choice(self.operation_text["Conj"])
+        Verb = random.choice(self.operation_text["Verb"])
+        Relation = random.choice(self.operation_text["Relation"])
+
+        col_num_0_number = random.choice(self.num_col_index)
+        col_num_0 = self.src_table[0][col_num_0_number]
+
+        col_1_number = random.choice(self.col_index)
+        col_1 = self.src_table[0][col_1_number]
+
+        col_2_number = random.choice(self.col_index)
+        col_2 = self.src_table[0][col_2_number]
+
+        if col_1_number in self.num_col_index:
+            op_1_symbol = random.choice(self.operation_text["num_op"])
+            op_1 = random.choice(self.op_list[op_1_symbol])
+        else:
+            op_1_symbol = random.choice(self.operation_text["op"])
+            op_1 = random.choice(self.not_num_op_list[op_1_symbol])
+
+        if col_2_number in self.num_col_index:
+            op_2_symbol = random.choice(self.operation_text["num_op"])
+            op_2 = random.choice(self.op_list[op_2_symbol])
+        else:
+            op_2_symbol = random.choice(self.operation_text["op"])
+            op_2 = random.choice(self.not_num_op_list[op_2_symbol])
+
+        val_1 = self.src_table[random.randrange(1, len(self.src_table))][col_1_number]
+        val_2 = self.src_table[random.randrange(1, len(self.src_table))][col_2_number]
+
+        operations_sel = {
+            "SELECT_0": [f'{Conj}all the {col_num_0} on the [TABLE]?',
+                         f'{Verb}all the {col_num_0} on the [TABLE].'],
+            "SELECT_1": [f'{Conj}the {col_num_0} where {col_1} is {op_1}{val_1}?',
+                         f'{Verb}the {col_num_0} where {col_1} is {op_1}{val_1}.'],
+            "SELECT_2":[f'{Conj}the {col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}?',
+                        f'{Verb}the {col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}.',
+                        ]
+        }
+        sql_sel = {
+            "SELECT_0": [f'SELECT {col_num_0} FROM [TABLE]'],
+            "SELECT_1": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
+            "SELECT_2": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1} and {col_2} {op_2_symbol} {val_2}']
+        }
+
+        # select random query
+        select_rand_operation = f'SELECT_{random.randrange(len(operations_sel))}'
+        my_literal = operations_sel[select_rand_operation][random.randrange(len(operations_sel[select_rand_operation]))]
+        my_SQL = sql_sel[select_rand_operation][0]
+
+        return my_literal, my_SQL
+
     def check_date(self, seq: str):
         date_list = ['date', 'Date', 'DATE', 'DAY', 'day', 'Day']
         for day in date_list:
@@ -425,6 +479,9 @@ if __name__=='__main__':
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nCount================')
     query, sql = Generator.input_literal_TO_COUNT()
+    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    print('\nSELECT================')
+    query, sql = Generator.input_literal_TO_SELECT()
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
 
 
