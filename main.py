@@ -369,6 +369,8 @@ class QueryGenerator:
         Conj = random.choice(self.operation_text["Conj"])
         Verb = random.choice(self.operation_text["Verb"])
         Relation = random.choice(self.operation_text["Relation"])
+        MIN = random.choice(self.operation_text["MIN"])
+        MAX = random.choice(self.operation_text["MAX"])
 
         col_num_0_number = random.choice(self.num_col_index)
         col_num_0 = self.src_table[0][col_num_0_number]
@@ -402,13 +404,31 @@ class QueryGenerator:
             "SELECT_1": [f'{Conj}the {col_num_0} where {col_1} is {op_1}{val_1}?',
                          f'{Verb}the {col_num_0} where {col_1} is {op_1}{val_1}.'],
             "SELECT_2":[f'{Conj}the {col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}?',
-                        f'{Verb}the {col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}.',
-                        ]
+                        f'{Verb}the {col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}.'],
+            "SELECT_3":[f'{Conj}the {MAX}{col_num_0} on the [TABLE]?',
+                        f'{Verb}the {MAX}{col_num_0} on the [TABLE].'],
+            "SELECT_4": [f'{Conj}the {MAX}{col_num_0} where {col_1} is {op_1}{val_1}?',
+                         f'{Verb}the {MAX}{col_num_0} where {col_1} is {op_1}{val_1}.'],
+            "SELECT_5":[f'{Conj}the {MAX}{col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}?',
+                        f'{Verb}the {MAX}{col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}.'],
+            "SELECT_6": [f'{Conj}the {MIN}{col_num_0} on the [TABLE]?',
+                         f'{Verb}the {MIN}{col_num_0} on the [TABLE].'],
+            "SELECT_7": [f'{Conj}the {MIN}{col_num_0} where {col_1} is {op_1}{val_1}?',
+                         f'{Verb}the {MIN}{col_num_0} where {col_1} is {op_1}{val_1}.'],
+            "SELECT_8": [f'{Conj}the {MIN}{col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}?',
+                         f'{Verb}the {MIN}{col_num_0} where {col_1} is {op_1}{val_1} and {col_2} is {op_2}{val_2}.']
         }
         sql_sel = {
             "SELECT_0": [f'SELECT {col_num_0} FROM [TABLE]'],
             "SELECT_1": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
-            "SELECT_2": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1} and {col_2} {op_2_symbol} {val_2}']
+            "SELECT_2": [f'SELECT {col_num_0} FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1} and {col_2} {op_2_symbol} {val_2}'],
+            "SELECT_3": [f'SELECT MAX({col_num_0}) FROM [TABLE]'],
+            "SELECT_4": [f'SELECT MAX({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
+            "SELECT_5": [f'SELECT MAX({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1} and {col_2} {op_2_symbol} {val_2}'],
+            "SELECT_6": [f'SELECT MIN({col_num_0}) FROM [TABLE]'],
+            "SELECT_7": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1}'],
+            "SELECT_8": [f'SELECT MIN({col_num_0}) FROM [TABLE] WHERE {col_1} {op_1_symbol} {val_1} and {col_2} {op_2_symbol} {val_2}'],
+
         }
 
         # select random query
@@ -465,21 +485,21 @@ if __name__=='__main__':
 
     Generator = QueryGenerator(src_table, src_talbe_name)
 
-    print('Sum================')
-    query, sql = Generator.input_literal_TO_SUM()
-    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
-    print('\nAvg================')
-    query, sql = Generator.input_literal_TO_AVG()
-    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
-    print('\nDiff================') ## Diff 3이 wikitq 스타일임!!!!!
-    query, sql = Generator.input_literal_TO_DIFF()
-    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
-    print('\nDiff2================')  ## Diff 3_NUM 은 조건에 사용되는 컬럼 다 나옴!!!!!
-    query, sql = Generator.input_literal_TO_DIFF2()
-    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
-    print('\nCount================')
-    query, sql = Generator.input_literal_TO_COUNT()
-    print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    # print('Sum================')
+    # query, sql = Generator.input_literal_TO_SUM()
+    # print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    # print('\nAvg================')
+    # query, sql = Generator.input_literal_TO_AVG()
+    # print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    # print('\nDiff================') ## Diff 3이 wikitq 스타일임!!!!!
+    # query, sql = Generator.input_literal_TO_DIFF()
+    # print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    # print('\nDiff2================')  ## Diff 3_NUM 은 조건에 사용되는 컬럼 다 나옴!!!!!
+    # query, sql = Generator.input_literal_TO_DIFF2()
+    # print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
+    # print('\nCount================')
+    # query, sql = Generator.input_literal_TO_COUNT()
+    # print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
     print('\nSELECT================')
     query, sql = Generator.input_literal_TO_SELECT()
     print(f'Query: {query}\nSQL: {sql}\nSELECT CELL: {Change_SQL_CAP(sql)}')
